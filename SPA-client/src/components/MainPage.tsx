@@ -53,7 +53,7 @@ export default function MainPage() {
             <Text style={styles.textHeader}>
                 Search by tag:
             </Text>
-            <SearchByTag />
+            <SearchByTag backgroundColor='#fff'/>
             <ComponentBreak />
             <Text style={styles.textHeader}>
                 Top tags:
