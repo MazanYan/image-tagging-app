@@ -1,10 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     AppBar, Toolbar,
     IconButton, Typography,
-    AppBarProps, makeStyles,
-    Drawer, Divider,
-    List, Theme,
+    makeStyles, Drawer, 
+    Divider, List, Theme,
     createStyles, useTheme 
   } from '@material-ui/core';
 
@@ -21,6 +20,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InfoIcon from '@material-ui/icons/Info';
 import SearchByTag from './SearchTag';
+import { getSidebarState } from '../redux/selectors';
+import { connect, useSelector } from 'react-redux';
+import { toggleSidebar } from '../redux/actions';
+
+import store from '../redux/store';
 
 const drawerWidth = '90%';
 const backgroundColor = '#2db668';
@@ -112,11 +116,60 @@ const sidebarElements = [
   }
 ]
 
-export default function Navbar(props: AppBarProps) {
+function Sidebar(props: any) {
 
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = useState(false);
+  const classes = useStyles();
+  const theme = useTheme();
+
+  const open = useSelector(store => getSidebarState(store));
+
+  useEffect(() => {
+    console.log(props);
+    //setOpen(getSidebarState(store));
+  });
+
+  return (
+    <Drawer
+      variant="persistent"
+      anchor="left"
+      open={open}
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+    >
+      <div className={classes.drawerHeader}>
+        <IconButton onClick={() => props.toggleSidebar()}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </div>
+      <Divider />
+      <List style={{maxHeight: '100%', overflow: 'auto'}}>
+        <ListItem>
+          <SearchByTag backgroundColor={backgroudColorLight} />
+        </ListItem>
+        <Divider />
+        {
+          sidebarElements.map(el => 
+            <ListItem button key={el.key}>
+              <ListItemIcon>
+                {el.icon}
+              </ListItemIcon>
+              <ListItemText primary={el.text} />
+            </ListItem>
+          )
+        }
+      </List>
+    </Drawer>
+  );
+}
+
+const mapStateToProps = (state: any) => { openState: getSidebarState(state) };
+
+const SidebarWithState = connect(mapStateToProps, { toggleSidebar })(Sidebar);
+
+function Navbar(props: any) {
+
+    //const [open, setOpen] = useState(false);
 
     const appBarStyle = {
         backgroundColor: backgroundColor,
@@ -124,53 +177,27 @@ export default function Navbar(props: AppBarProps) {
     };
 
     return (
-        <Fragment>
-            <AppBar {...props} style={appBarStyle}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={() => setOpen(true)}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
-                    <Typography variant="h5" noWrap>
-                        Image Tagger
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-              variant="persistent"
-              anchor="left"
-              open={open}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-            >
-              <div className={classes.drawerHeader}>
-                <IconButton onClick={() => setOpen(false)}>
-                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                </IconButton>
-              </div>
-              <Divider />
-              <List style={{maxHeight: '100%', overflow: 'auto'}}>
-                <ListItem>
-                  <SearchByTag backgroundColor={backgroudColorLight} />
-                </ListItem>
-                <Divider />
-                {
-                  sidebarElements.map(el => 
-                    <ListItem button key={el.key}>
-                      <ListItemIcon>
-                        {el.icon}
-                      </ListItemIcon>
-                      <ListItemText primary={el.text} />
-                    </ListItem>
-                  )
-                }
-              </List>
-          </Drawer>
-        </Fragment>
-    )
+      <AppBar {...props} style={appBarStyle}>
+          <Toolbar>
+              <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={() => {
+                    console.log('Sidebar state');
+                    console.log(getSidebarState(store));
+                    props.toggleSidebar()
+                  }}
+              >
+                  <MenuIcon/>
+              </IconButton>
+              <Typography variant="h5" noWrap>
+                  Image Tagger
+              </Typography>
+          </Toolbar>
+          <SidebarWithState />
+      </AppBar>
+    );
 }
+
+export default connect(null, { toggleSidebar })(Navbar);
