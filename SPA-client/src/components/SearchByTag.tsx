@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 );
 
 interface SearchByTagProps {
-  backgroundColor: string
+  style: object
 }
 
 export default function SearchByTag(props: SearchByTagProps) {
@@ -31,9 +31,9 @@ export default function SearchByTag(props: SearchByTagProps) {
 
   const btnClass = makeStyles({
     button: {
-      backgroundColor: props.backgroundColor
+      ...props.style
     }
-  })()
+  })();
 
   return (
     <Paper component="form" className={clsx(btnClass.button, classes.root)}>

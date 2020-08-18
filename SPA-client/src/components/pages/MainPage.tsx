@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { makeStyles, List, ListSubheader, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from '@material-ui/core';
-import WifiIcon from '@material-ui/icons/Wifi';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { List, ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
-import SearchByTag from './SearchTag';
-import { Tag, AddTag } from './Tag';
-import { ImageThumbnail, ThumbnailList } from './ImageThumbnail';
+import SearchByTag from '../SearchByTag';
+import { Tag, AddTag } from '../Tag';
+import { ThumbnailList } from '../ImageThumbnail';
 
 function ComponentBreak() {
     const hrStyle = {
@@ -19,8 +18,6 @@ function ComponentBreak() {
         <hr style={hrStyle} />
     )
 }
-
-
 
 const styles = StyleSheet.create({
     root: {
@@ -46,14 +43,12 @@ const styles = StyleSheet.create({
 
 export default function MainPage() {
 
-    console.log(ImageThumbnail);
-
     return (
         <View style={styles.root}>
             <Text style={styles.textHeader}>
                 Search by tag:
             </Text>
-            <SearchByTag backgroundColor='#fff'/>
+            <SearchByTag style={{ backgroundColor:'#fff'}} />
             <ComponentBreak />
             <Text style={styles.textHeader}>
                 Top tags:

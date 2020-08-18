@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image } from 'react-native';
 
 const styles = StyleSheet.create({
     thumbsList: {
@@ -37,5 +37,5 @@ export function ThumbnailList() {
             <ImageThumbnail name='naruto b387d10ca6b7f8cfe51c4c4f872a5369.jpg'/>
             <ImageThumbnail name='naruto b387d10ca6b7f8cfe51c4c4f872a5369.jpg'/>
         </Text>
-    )
+    );
 }

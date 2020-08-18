@@ -2,7 +2,7 @@ import { TOGGLE_SIDEBAR } from '../actionTypes';
 import { ReduxAction } from '../actions';
 
 const initialState = {
-    sidebarOpen: true
+    sidebarOpen: false
 };
 
 export default function(state = initialState, action: ReduxAction) {
